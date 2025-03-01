@@ -1,4 +1,4 @@
-// Game state variables
+// Game State Variables
 let board = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
 let gameActive = true;
@@ -6,82 +6,86 @@ const statusDisplay = document.getElementById("status");
 const cells = document.querySelectorAll(".cell");
 const resetButton = document.getElementById("reset");
 
-// Winning combinations
+// wining Combinitions
 const winningConditions = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6]             // Diagonals
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8], // Rows
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8], // Columns
+  [0, 4, 8],
+  [2, 4, 6], // Diagonals
 ];
 
 // Handle user click
 function handleClick(event) {
-    const cell = event.target;
-    const index = cell.dataset.index;
+  const cell = event.target;
+  const index = cell.dataset.index;
 
-    if (board[index] !== "" || !gameActive) return;
+  if (board[index] !== "" || !gameActive) return;
 
-    board[index] = currentPlayer;
-    cell.textContent = currentPlayer;
+  board[index] = currentPlayer;
+  cell.textContent = currentPlayer;
 
-    if (checkWinner()) return;
+  if (checkWinner()) return;
 
-    currentPlayer = "O";
-    statusDisplay.textContent = "AI's turn";
+  currentPlayer = "O";
+  statusDisplay.textContent = "AI's turn";
 
-    setTimeout(aiMove, 500); // AI move after 0.5s
+  setTimeout(aiMove, 500); // AI move after 0.5s
 }
 
 // AI makes a move (random empty cell)
 function aiMove() {
-    let emptyCells = board.map((val, index) => val === "" ? index : null).filter(val => val !== null);
-    
-    if (emptyCells.length === 0 || !gameActive) return;
+  let emptyCells = board
+    .map((val, index) => (val === "" ? index : null))
+    .filter((val) => val !== null);
 
-    let randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    board[randomIndex] = "O";
-    cells[randomIndex].textContent = "O";
+  if (emptyCells.length === 0 || !gameActive) return;
 
-    if (checkWinner()) return;
+  let randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  board[randomIndex] = "O";
+  cells[randomIndex].textContent = "O";
 
-    currentPlayer = "X";
-    statusDisplay.textContent = "Player X's turn";
+  if (checkWinner()) return;
+
+  currentPlayer = "X";
+  statusDisplay.textContent = "Player X's turn";
 }
-
-// Check for a winner
+// check for winner
 function checkWinner() {
-    for (let condition of winningConditions) {
-        let [a, b, c] = condition;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            gameActive = false;
-            highlightWinnerCells([a, b, c]);
-            statusDisplay.textContent = `${board[a]} wins!`;
-            showCongratulations(board[a]);
-            startConfetti();
-            return true;
-        }
+  for (let condition of winningConditions) {
+    let [a, b, c] = condition;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      gameActive = false;
+      highlightWinnerCells([a, b, c]);
+      statusDisplay.textContent = `${board[a]} wins!`;
+      showCongratulations(board[a]);
+      startConfetti();
+      return true;
     }
-
-    if (!board.includes("")) {
-        gameActive = false;
-        statusDisplay.textContent = "It's a draw!";
-        return true;
-    }
-
-    return false;
+  }
+  if (!board.includes("")) {
+    gameActive = false;
+    statusDisplay.textContent = "It's Draw!";
+    return true;
+  }
+  return false;
 }
 
 // Function to highlight the winning cells and add a visual line
 function highlightWinnerCells(cellsIndexes) {
     cellsIndexes.forEach(index => {
         const cell = document.querySelectorAll(".cell")[index];
-        cell.style.backgroundColor = "#ffeb3b"; // Yellow highlight
+        cell.style.backgroundColor = "#ADD8E6"; 
     });
 
     // Add a visual line (e.g., border) to the winning combination
     const [a, b, c] = cellsIndexes;
-    document.querySelectorAll(".cell")[a].style.borderTop = "5px solid red";
-    document.querySelectorAll(".cell")[b].style.borderTop = "5px solid red";
-    document.querySelectorAll(".cell")[c].style.borderTop = "5px solid red";
+    document.querySelectorAll(".cell")[a].style.border = "3px solid red";
+    document.querySelectorAll(".cell")[b].style.border = "3px solid red";
+    document.querySelectorAll(".cell")[c].style.border = "3px solid red";
 }
 
 // Function to show a "Congratulations" message
@@ -144,7 +148,7 @@ function resetGame() {
     cells.forEach(cell => {
         cell.textContent = "";
         cell.style.backgroundColor = ""; // Reset background color
-        cell.style.borderTop = ""; // Reset border
+        cell.style.border = ""; // Reset border
     });
 }
 
