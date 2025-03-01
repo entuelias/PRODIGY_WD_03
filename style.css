@@ -66,6 +66,7 @@ button:hover {
     background: linear-gradient(135deg, #ff7eb3, #ff758c);
     transform: scale(1.05);
 }
+
 @media (max-width: 400px) {
     .board {
         width: 90vw;
@@ -73,12 +74,34 @@ button:hover {
     }
 
     .cell {
-
         font-size: 1.5em; 
     }
 
     button {
         font-size: 14px;
         padding: 8px 12px;
+    }
+}
+
+/* Confetti animation */
+.confetti {
+    position: fixed;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background: red;
+    opacity: 0.8;
+    animation: confetti-fall 3s linear forwards;
+}
+
+/* Random falling animation */
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
     }
 }
